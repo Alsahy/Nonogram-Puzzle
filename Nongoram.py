@@ -9,7 +9,7 @@
 #         """
 
 class Nonogram:
-    def __init__(self, size = 5, rows = [[]*5], cols = [[]*5], puzzle = [[0 for i in range(size)] for j in range(size)]):
+    def __init__(self, size=5):
         """
         Initialization for the Nonogram Object
         :param size: the lenght of the side of the grid
@@ -17,21 +17,35 @@ class Nonogram:
         :param cols: a list of lists, each one represents the number above of each column
         :param puzzle: 2d empty list, represnting a white grid, 0 means white, 1 means black
         """
-        size = size
-        rows = rows # should be like this [[1], [2, 2], [3], [4], [5]]
-        cols = cols # should be like this [[1], [2, 2], [3], [4], [5]]
-        puzzle = puzzle
+        self.size = size
+        self.rows=[[]*size] # should be like this [[1], [2, 2], [3], [4], [5]]
+        self.cols=[[]*size] # should be like this [[1], [2, 2], [3], [4], [5]]
+        self.puzzle=[[0 for i in range(size)] for j in range(size)]
         solved = False
 
-    def get_a_row(row_idx, puzzle):
+    def set_rows(self, rows):
+        """
+        sets the rows by the user
+        :param rows: the rows user wants to set
+        """
+        self.rows = rows
+
+    def set_cols(self, cols):
+        """
+        sets the columns by the user
+        :param cols: the columns user wants to set
+        """
+        self.cols = cols
+
+    def get_a_row(self, row_idx, puzzle):
         """
         Gets a row from the rows on the side
-        :param puzzle: the passed state to the function 
+        :param puzzle: the passed state to the function
         :return: the row on the side in a list
         """
         row = []
         cnt = 0
-        for i in range(size):
+        for i in range(self.size):
             if cnt > 0 and puzzle[row_idx][i] == 0:
                 row.append(cnt)
                 cnt = 0
@@ -43,15 +57,15 @@ class Nonogram:
 
         return row
 
-    def get_a_col(col_idx, puzzle):
+    def get_a_col(self, col_idx, puzzle):
         """
         Gets a column from the columns above
-        :param puzzle: the passed state to the function 
+        :param puzzle: the passed state to the function
         :return: the column above in a list
         """
         col = []
         cnt = 0
-        for i in range(size):
+        for i in range(self.size):
             if cnt > 0 and puzzle[i][col_idx] == 0:
                 col.append(cnt)
                 cnt = 0
