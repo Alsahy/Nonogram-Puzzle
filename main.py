@@ -1,4 +1,4 @@
-from Nonogram import Nongram
+from Nonogram import Nonogram
 """
 create object from class
 generate puzzle
