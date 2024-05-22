@@ -23,6 +23,46 @@ class Nonogram:
         puzzle = puzzle
         solved = False
 
+    def get_a_row(row_idx, puzzle):
+        """
+        Gets a row from the rows on the side
+        :param puzzle: the passed state to the function 
+        :return: the row on the side in a list
+        """
+        row = []
+        cnt = 0
+        for i in range(size):
+            if cnt > 0 and puzzle[row_idx][i] == 0:
+                row.append(cnt)
+                cnt = 0
+            elif puzzle[row_idx][i] == 1:
+                cnt += 1
+
+        if cnt > 0:
+            row.append(cnt)
+
+        return row
+
+    def get_a_col(col_idx, puzzle):
+        """
+        Gets a column from the columns above
+        :param puzzle: the passed state to the function 
+        :return: the column above in a list
+        """
+        col = []
+        cnt = 0
+        for i in range(size):
+            if cnt > 0 and puzzle[i][col_idx] == 0:
+                col.append(cnt)
+                cnt = 0
+            elif puzzle[i][col_idx] == 1:
+                cnt += 1
+
+        if cnt > 0:
+            col.append(cnt)
+
+        return col
+
     # 1
     def generate_puzzle(self):
         """
