@@ -24,6 +24,13 @@ class Nonogram:
         self.puzzle=[[0 for i in range(size)] for j in range(size)]
         solved = False
 
+    def set_puzzle(self, puzzle):
+        """
+        sets the puzzle by the user
+        :param puzzle: the puzzle user wants to set
+        """
+        self.puzzle = puzzle
+
     def set_rows(self, rows):
         """
         sets the rows by the user
@@ -90,7 +97,28 @@ class Nonogram:
         """
         checks if the puzzle solved in right way or not
         """
-        pass
+        # Check Current Rows == Actual Rows
+        cur_rows = []
+        rows_flag = True
+        for i in range(self.size):
+            cur_rows.append(self.get_a_row(i, self.puzzle))
+        for i in range(self.size):
+            if self.rows[i] != cur_rows[i]:
+                rows_flag = False
+
+        # Check Current Cols == Actual Cols
+        cur_cols = []
+        cols_flag = True
+        for i in range(self.size):
+            cur_cols.append(self.get_a_col(i, self.puzzle))
+        for i in range(self.size):
+            if self.cols[i] != cur_cols[i]:
+                cols_flag = False
+        if rows_flag & cols_flag:
+            self.solve = True
+            return True
+        else:
+            return False
 
     # 4
     def solve(self):
