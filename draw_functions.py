@@ -53,14 +53,6 @@ def print_row_clues(img, offset, cell_unit, N, solution, row_clues):
         :param row_clues: the clues on the side
         :return: img: the final object of the image
     """
-    def string_row_clue(a_row_clue):
-        """
-        turns the clue from a list to a string
-        :param a_row_clue:
-        :return: the string of the clue
-        """
-        s = ""
-        return s
 
     return img
 
@@ -75,17 +67,14 @@ def print_col_clues(img, offset, cell_unit, N, solution, col_clues):
         :param col_clues: the clues above
         :return: img: the final object of the image
     """
-    def string_col_clue(a_col_clue):
-        """
-            turns the clue from a list to a string
-            :param a_col_clue:
-            :return: the string of the clue
-        """
-        s = ""
-        for number in a_col_clue:
-            s = s + str(n) + '\n'
-        return s
-
-    font = cv.FONT_HERSHEY_SCRIPT_SIMPLEX  # text type
-    for clue in col_clues:
-        cv.putText(img, "clue", (120, 490), font, 1.5, (255, 255, 255), 2)
+    Text_offset = int(250 / N)
+    font = cv2.FONT_HERSHEY_SCRIPT_SIMPLEX  # font type
+    for i in range(N):
+        for j in range(len(col_clues[i])):
+          cv2.putText(img, # image object
+                      str(col_clues[i][j]),
+                      (offset+i*cell_unit+int(cell_unit/2), Text_offset * (j+1)), # start position (horizontal offset + cell offset + centering offset, vertical offset)
+                      font, # font type
+                      6/N, # size
+                      Black, # color
+                      1) # line width
