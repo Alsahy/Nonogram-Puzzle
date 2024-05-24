@@ -7,6 +7,7 @@
 #             returns:
 #                 a_list: pla
 #         """
+from draw_functions import *
 
 class Nonogram:
     def __init__(self, size=5):
@@ -117,8 +118,27 @@ class Nonogram:
         pass
 
     # 2
-    def print_puzzle(self, puzzle):
+    def visualize_nonogram(self, solution, row_clues, col_clues):
         """
         Prints the puzzle in beautiful form
-        :param puzzle: 2d list representing the current state of the puzzle
+        :param solution: 2d list representing the current state of the puzzle
+        :param row_clues: the clues on the side
+        :param col_clues: the clues above
         """
+        N = len(solution)
+        size = 750
+
+        img = np.zeros([size, size, 3], np.uint8)  # create image
+        img = cv2.rectangle(img, (0, 0), (size, size), White, -1)
+        offset = int(size * 0.3)
+        size = size - offset
+        cell_unit = int(size / (N))
+
+        img = print_rectangels(img, offset, cell_unit, N, solution)
+        # img = print_lines(img, offset, cell_unit, N, solution)
+        # img = print_row_clues(img, offset, cell_unit, N, solution)
+        # img = print_col_clues(img, offset, cell_unit, N, solution)
+
+        cv2.imshow('image', img)  # show your work by window
+        cv2.waitKey(0)  # wait key from keyboard
+        cv2.destroyAllWindows()  # close any opened window
