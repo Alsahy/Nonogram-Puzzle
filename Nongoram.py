@@ -136,8 +136,8 @@ class Nonogram:
 
         img = print_rectangels(img, offset, cell_unit, N, solution)
         # img = print_lines(img, offset, cell_unit, N, solution)
-        # img = print_row_clues(img, offset, cell_unit, N, solution)
-        # img = print_col_clues(img, offset, cell_unit, N, solution)
+        # print_row_clues(img, offset, cell_unit, N, solution, row_clues)
+        print_col_clues(img, offset, cell_unit, N, solution, col_clues)
 
         cv2.imshow('image', img)  # show your work by window
         cv2.waitKey(0)  # wait key from keyboard
