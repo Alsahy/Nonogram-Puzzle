@@ -27,7 +27,7 @@ def print_rectangels(img, offset, cell_unit, N, solution):
                                   (offset+col*cell_unit, offset+row*cell_unit), # start position
                                   (offset+(col+1)*cell_unit, offset+(row+1)*cell_unit), # end position
                                   White, # color
-                                  3) # fill if -1 and line width if another positive value
+                                  8) # fill if -1 and line width if another positive value
     return img
 
 def print_lines(img, offset, cell_unit, N, solution):
