@@ -8,6 +8,8 @@
 #                 a_list: pla
 #         """
 from draw_functions import *
+from puzzle_generator import *
+
 
 class Nonogram:
     def __init__(self, size=5):
@@ -19,8 +21,8 @@ class Nonogram:
         :param puzzle: 2d empty list, represnting a white grid, 0 means white, 1 means black
         """
         self.size = size
-        self.rows=[[]*size] # should be like this [[1], [2, 2], [3], [4], [5]]
-        self.cols=[[]*size] # should be like this [[1], [2, 2], [3], [4], [5]]
+        self.rows=[[] for _ in range(size)] # should be like this [[1], [2, 2], [3], [4], [5]]
+        self.cols=[[] for _ in range(size)] # should be like this [[1], [2, 2], [3], [4], [5]]
         self.puzzle=[[0 for i in range(size)] for j in range(size)]
         solved = False
 
@@ -51,19 +53,7 @@ class Nonogram:
         :param puzzle: the passed state to the function
         :return: the row on the side in a list
         """
-        row = []
-        cnt = 0
-        for i in range(self.size):
-            if cnt > 0 and puzzle[row_idx][i] == 0:
-                row.append(cnt)
-                cnt = 0
-            elif puzzle[row_idx][i] == 1:
-                cnt += 1
-
-        if cnt > 0:
-            row.append(cnt)
-
-        return row
+        return self.rows[row_idx]
 
     def get_a_col(self, col_idx, puzzle):
         """
@@ -71,27 +61,27 @@ class Nonogram:
         :param puzzle: the passed state to the function
         :return: the column above in a list
         """
-        col = []
-        cnt = 0
-        for i in range(self.size):
-            if cnt > 0 and puzzle[i][col_idx] == 0:
-                col.append(cnt)
-                cnt = 0
-            elif puzzle[i][col_idx] == 1:
-                cnt += 1
-
-        if cnt > 0:
-            col.append(cnt)
-
-        return col
-
+        return self.cols[col_idx]
     # 1
+
     def generate_puzzle(self):
         """
         generates a solution represents the puzzle and changes rows and cols for "self"
         """
-        pass
+        generate_random_grid(self.size,self.puzzle)
 
+        for i in range(self.size):
+            generate_puzzle_row(self.size,i,self.puzzle,self.rows)
+            generate_puzzle_col(self.size,i,self.puzzle,self.cols)
+
+        print(self.puzzle)
+        print("\nRow clues as a single list of lists:")
+        print(self.rows)
+        print("\nColumn clues as a single list of lists:")
+        print(self.cols)
+
+        # 1
+    
     # 1
     def is_complete(self):
         """
