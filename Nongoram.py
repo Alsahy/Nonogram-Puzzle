@@ -138,24 +138,18 @@ class Nonogram:
             if len(prefixSum) > len(givenRow):
                 return False
 
-            for k in range(len(prefixSum)):
-                if j == self.size-1:
-                    if len(prefixSum) != len(givenRow):
-                        return False
-                    for _ in range(len(givenRow)):
-                        if givenRow[_] != prefixSum[_][0]:
-                            return False
+            for i in range(len(prefixSum)):
 
-            if prefixSum[k][0] > givenRow[k]:
-                return False
+                if prefixSum[i][0] > givenRow[i]:
+                    return False
 
-            # Not the last Idx
-            if prefixSum[k][0] < givenRow[k] and k != len(prefixSum) - 1: # [2, 1] ==> [1, 0, 1] ==> (1, 1)
-                return False
+                # Not the last Idx
+                if prefixSum[i][0] < givenRow[i] and i != len(prefixSum) - 1:
+                    return False
 
-            if prefixSum[k][0] < givenRow[k] and k == len(prefixSum) - 1 and (self.size - prefixSum[k][1] - 1) < ( # [3] ==> [0, 1, 1, 1] ==> [(3, 1)]
-                    givenRow[k] - prefixSum[k][0]):
-                return False
+                if prefixSum[i][0] < givenRow[i] and i == len(prefixSum) - 1 and (self.size - prefixSum[i][1] - 1) < (
+                        givenRow[i] - prefixSum[i][0]):
+                    return False
 
             return True
 
@@ -190,27 +184,16 @@ class Nonogram:
             if len(prefixSum) > len(givenCol):
                 return False
 
-            for k in range(len(prefixSum)):
-                if i == self.size-1:
-                    if len(prefixSum) != len(givenCol):
-                        return False
-                    for _ in range(len(givenCol)):
-                        if givenCol[_] != prefixSum[_][0]:
-                            return False
-
-            if prefixSum[k][0] > givenCol[k]:
-                return False
-
-            for k in range(len(prefixSum)):
-                if prefixSum[k][0] > givenCol[k]:
+            for i in range(len(prefixSum)):
+                if prefixSum[i][0] > givenCol[i]:
                     return False
 
                 # Not the last Idx
-                if prefixSum[k][0] < givenCol[k] and k != len(prefixSum) - 1:
+                if prefixSum[i][0] < givenCol[i] and i != len(prefixSum) - 1:
                     return False
 
-                if prefixSum[k][0] < givenCol[k] and k == len(prefixSum) - 1 and (self.size - prefixSum[k][1] - 1) < (
-                        givenCol[k] - prefixSum[k][0]):
+                if prefixSum[i][0] < givenCol[i] and i == len(prefixSum) - 1 and (self.size - prefixSum[i][1] - 1) < (
+                        givenCol[i] - prefixSum[i][0]):
                     return False
 
             return True
@@ -218,8 +201,7 @@ class Nonogram:
 
         def backtrack(r, c):
 
-            if self.solved or (r == self.size and self.is_complete()):
-                self.solved = True
+            if r >= self.size and self.is_complete():
                 return True
 
             if r >= self.size:
