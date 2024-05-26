@@ -47,13 +47,25 @@ class Nonogram:
         """
         self.cols = cols
 
-    def get_a_row(self, row_idx, puzzle):
+        def get_a_row(self, row_idx, puzzle):
         """
         Gets a row from the rows on the side
         :param puzzle: the passed state to the function
         :return: the row on the side in a list
         """
-        return self.rows[row_idx]
+        row = []
+        cnt = 0
+        for i in range(self.size):
+            if cnt > 0 and puzzle[row_idx][i] == 0:
+                row.append(cnt)
+                cnt = 0
+            elif puzzle[row_idx][i] == 1:
+                cnt += 1
+
+        if cnt > 0:
+            row.append(cnt)
+
+        return row
 
     def get_a_col(self, col_idx, puzzle):
         """
@@ -61,7 +73,19 @@ class Nonogram:
         :param puzzle: the passed state to the function
         :return: the column above in a list
         """
-        return self.cols[col_idx]
+        col = []
+        cnt = 0
+        for i in range(self.size):
+            if cnt > 0 and puzzle[i][col_idx] == 0:
+                col.append(cnt)
+                cnt = 0
+            elif puzzle[i][col_idx] == 1:
+                cnt += 1
+
+        if cnt > 0:
+            col.append(cnt)
+
+        return col
     # 1
 
     def generate_puzzle(self):
