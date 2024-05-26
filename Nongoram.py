@@ -68,11 +68,12 @@ class Nonogram:
         """
         generates a solution represents the puzzle and changes rows and cols for "self"
         """
-        generate_random_grid(self.size,self.puzzle)
+        puzzle = [[0 for i in range(self.size)] for j in range(self.size)]
+        generate_random_grid(self.size, puzzle)
 
         for i in range(self.size):
-            generate_puzzle_row(self.size,i,self.puzzle,self.rows)
-            generate_puzzle_col(self.size,i,self.puzzle,self.cols)
+            generate_puzzle_row(self.size, i, puzzle, self.rows)
+            generate_puzzle_col(self.size, i, puzzle, self.cols)
 
         print(self.puzzle)
         print("\nRow clues as a single list of lists:")
@@ -115,25 +116,132 @@ class Nonogram:
         """
         solves the puzzle using backtracking
         """
-        current_state = [[0 for i in range(size)] for j in range(size)]
+        def valid_row(i, j):
+            givenRow = self.rows[i]  # [2,1]
+            matrixRow = self.puzzle[i]  # [1 0 0 0 0] -> [1, 1]
+            prefixSum = []  # First represent the sum & Second represent the startIdx of the sum
+            currSum = 0
+            startIdxOfSum = 0
 
-        # 2
-        def is_valid(state):
-            """
-            Checks if the current state in the backtracking case is valid or not
-            :param state: the state we want to check
-            """
-            pass
+            for k in range(self.size):
+                if currSum and (matrixRow[k] == 0):
+                    prefixSum.append((currSum, startIdxOfSum))
+                    currSum = 0
+                elif matrixRow[k] == 1:
+                    currSum += 1
+                    if currSum == 1:
+                        startIdxOfSum = k
+            # Check If the last element in the row is 1
+            if currSum:
+                prefixSum.append((currSum, startIdxOfSum))
 
+            if len(prefixSum) > len(givenRow):
+                return False
+
+            for k in range(len(prefixSum)):
+                if j == self.size-1:
+                    if len(prefixSum) != len(givenRow):
+                        return False
+                    for _ in range(len(givenRow)):
+                        if givenRow[_] != prefixSum[_][0]:
+                            return False
+
+            if prefixSum[k][0] > givenRow[k]:
+                return False
+
+            # Not the last Idx
+            if prefixSum[k][0] < givenRow[k] and k != len(prefixSum) - 1: # [2, 1] ==> [1, 0, 1] ==> (1, 1)
+                return False
+
+            if prefixSum[k][0] < givenRow[k] and k == len(prefixSum) - 1 and (self.size - prefixSum[k][1] - 1) < ( # [3] ==> [0, 1, 1, 1] ==> [(3, 1)]
+                    givenRow[k] - prefixSum[k][0]):
+                return False
+
+            return True
+
+        def valid_col(i, j):
+            givenCol = self.cols[j]
+            # matrixCol = [[0 for k in range(self.size)] for l in range(self.size)]
+            # matrixCol = [matrixCol[k][j] for k in range(self.size)]
+            matrixCol = []
+            for k in range(self.size):
+                matrixCol.append(self.puzzle[k][j])
+
+            prefixSum = []
+            currSum = 0
+            startIdxOfSum = 0
+
+            for k in range(self.size):
+
+                if currSum and matrixCol[k] == 0:
+                    prefixSum.append((currSum, startIdxOfSum))
+                    currSum = 0
+
+                elif matrixCol[k] == 1:
+                    currSum += 1
+
+                    if currSum == 1:
+                        startIdxOfSum = k
+
+            # check if the last idx in the col is 1
+            if currSum:
+                prefixSum.append((currSum, startIdxOfSum))
+
+            if len(prefixSum) > len(givenCol):
+                return False
+
+            for k in range(len(prefixSum)):
+                if i == self.size-1:
+                    if len(prefixSum) != len(givenCol):
+                        return False
+                    for _ in range(len(givenCol)):
+                        if givenCol[_] != prefixSum[_][0]:
+                            return False
+
+            if prefixSum[k][0] > givenCol[k]:
+                return False
+
+            for k in range(len(prefixSum)):
+                if prefixSum[k][0] > givenCol[k]:
+                    return False
+
+                # Not the last Idx
+                if prefixSum[k][0] < givenCol[k] and k != len(prefixSum) - 1:
+                    return False
+
+                if prefixSum[k][0] < givenCol[k] and k == len(prefixSum) - 1 and (self.size - prefixSum[k][1] - 1) < (
+                        givenCol[k] - prefixSum[k][0]):
+                    return False
+
+            return True
         # 2
-        def backtrack(current_state):
-            """
-            The recursive function
-            :param current_state:
-            :return:
-            """
-            pass
-        pass
+
+        def backtrack(r, c):
+
+            if self.solved or (r == self.size and self.is_complete()):
+                self.solved = True
+                return True
+
+            if r >= self.size:
+                return False
+            nextRow = r + 1 if c == self.size - 1 else r
+            nextCol = 0 if c == self.size - 1 else c + 1
+
+            foundWithOne = False
+            self.puzzle[r][c] = 1
+            if valid_col(r, c) and valid_row(r, c):
+                foundWithOne |= backtrack(nextRow, nextCol)
+
+            if foundWithOne:
+                return True
+
+            # If solution not found by making this cell 1 , then the solution must be with 0
+            # So return backtrack of nextRow and nextCol with 0
+            self.puzzle[r][c] = 0
+
+            return backtrack(nextRow, nextCol)
+
+        backtrack(0, 0)
 
     # 2
     def visualize_nonogram(self, solution, row_clues, col_clues):
