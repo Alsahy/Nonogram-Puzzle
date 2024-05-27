@@ -21,9 +21,11 @@ class Nonogram:
         :param puzzle: 2d empty list, represnting a white grid, 0 means white, 1 means black
         """
         self.size = size
-        self.rows=[[] for _ in range(size)] # should be like this [[1], [2, 2], [3], [4], [5]]
-        self.cols=[[] for _ in range(size)] # should be like this [[1], [2, 2], [3], [4], [5]]
-        self.puzzle=[[0 for i in range(size)] for j in range(size)]
+        # should be like this [[1], [2, 2], [3], [4], [5]]
+        self.rows = [[] for _ in range(size)]
+        # should be like this [[1], [2, 2], [3], [4], [5]]
+        self.cols = [[] for _ in range(size)]
+        self.puzzle = [[0 for i in range(size)] for j in range(size)]
         solved = False
 
     def set_puzzle(self, puzzle):
@@ -47,7 +49,7 @@ class Nonogram:
         """
         self.cols = cols
 
-        def get_a_row(self, row_idx, puzzle):
+    def get_a_row(self, row_idx, puzzle):
         """
         Gets a row from the rows on the side
         :param puzzle: the passed state to the function
@@ -99,14 +101,14 @@ class Nonogram:
             generate_puzzle_row(self.size, i, puzzle, self.rows)
             generate_puzzle_col(self.size, i, puzzle, self.cols)
 
-        print(self.puzzle)
-        print("\nRow clues as a single list of lists:")
-        print(self.rows)
-        print("\nColumn clues as a single list of lists:")
-        print(self.cols)
+        # print(self.puzzle)
+        # print("\nRow clues as a single list of lists:")
+        # print(self.rows)
+        # print("\nColumn clues as a single list of lists:")
+        # print(self.cols)
 
         # 1
-    
+
     # 1
     def is_complete(self):
         """
@@ -258,7 +260,7 @@ class Nonogram:
         :param col_clues: the clues above
         """
         N = len(solution)
-        size = 750
+        size = 600
 
         img = np.zeros([size, size, 3], np.uint8)  # create image
         img = cv2.rectangle(img, (0, 0), (size, size), White, -1)
@@ -267,8 +269,8 @@ class Nonogram:
         cell_unit = int(size / (N))
 
         img = print_rectangels(img, offset, cell_unit, N, solution)
-        # img = print_lines(img, offset, cell_unit, N, solution)
-        # print_row_clues(img, offset, cell_unit, N, solution, row_clues)
+        img = print_lines(img, offset, cell_unit, N, solution)
+        print_row_clues(img, offset, cell_unit, N, solution, row_clues)
         print_col_clues(img, offset, cell_unit, N, solution, col_clues)
 
         cv2.imshow('image', img)  # show your work by window
